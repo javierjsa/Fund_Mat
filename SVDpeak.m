@@ -10,13 +10,21 @@ ruidosa=im2double(ruidosa);
 %
 
 [U,S,V]=svd(ruidosa);
+[Uo,So,Vo]=svd(original);
+
 [m,n]=size(S);
+PSNRratio=zeros(1,m);
 PSNR=zeros(1,m);
 PSNR2=zeros(1,m);
 for k=1:m
    rec=U(:,1:k)*S(1:k,1:k)*V(:,1:k)';
+   rec_orig=Uo(:,1:k)*So(1:k,1:k)*Vo(:,1:k)';
    actual=PSNR_V(rec,original);
    PSNR2(1,k)=actual;
+   
+   ratio=PSNR_V(rec,rec_orig);
+   PSNRratio(1,k)=ratio;
+   
    [actual,val]=psnr(rec,original);
    PSNR(1,k)=val;
 end   
@@ -24,6 +32,8 @@ end
 plot(PSNR);
 hold on;
 plot(PSNR2);
+hold on
+plot(PSNRratio)
 hold off;
 res=max(PSNR);
 res2=max(PSNR2);
