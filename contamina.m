@@ -6,13 +6,13 @@
 %f=rgb2gray(f);
 %f=P256;
 %f=double(f);
-f=imread('picasso1r.jpg');
+f=imread('dali.jpg');
 f=rgb2gray(f);
 f=im2double(f);
 fn=f+(max(f(:))*0.05*randn(size(f)));
 noise=fn-f;
 imwrite(fn,'nimage.jpg');
-%imwrite(fn,'noisy_mona_lisa_bw.jpg');
+imwrite(fn,'dalir_noise_bw.jpg');
 %imwrite(noise,'noise_van_gogh.jpg');
 %imwrite(noise,'noise_mona_lisa.jpg');
 figure
