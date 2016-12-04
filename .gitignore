@@ -4,3 +4,10 @@
 *.pdf
 *.txt
 *.zip
+*.md
+*.tif
+*.tiff
+~*
+*~
+
+

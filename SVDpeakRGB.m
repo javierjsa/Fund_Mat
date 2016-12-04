@@ -1,7 +1,11 @@
-function SVDpeak(ruidosa,original)
+function SVDpeakRGB(ruidosa,original)
 %calcula la descomposicion SVD
-%calcula pnsr entre image original y reconstruccion ruidosa
-%calcula el ratio de crecimiento entre pasos
+%calcula pnsr de imagen RGB convirtiendo a bw
+%SVDpeakRGB(ruidos.original)
+
+
+original=im2bw(original);
+ruidosa =im2bw(ruidosa);
 
 original=im2double(original);
 ruidosa=im2double(ruidosa);
@@ -33,15 +37,15 @@ end
 
 subplot(3,1,1);  
 plot(PSNR);
-title('PSNR matlab')
+title('PSNR matlab RGB')
 
 subplot(3,1,2); 
 plot(PSNR2);
-title('PSNR con PSNR_V');
+title('PSNR con PSNR_V RGB');
 
 subplot(3,1,3); 
 plot(PSNRratio);
-title('Ratio reconst orig-ruidosa');
+title('Ratio reconst orig-ruidosa RGB');
 
 res=max(PSNR);
 res2=max(PSNR2);
