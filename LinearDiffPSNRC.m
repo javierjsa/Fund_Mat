@@ -1,39 +1,30 @@
-function resp=LinearDiffPSNR(original,fn, lambda, dt, start,stop,step,showImg,showRes)
-%Realiza un proceso en BW de difusion pura y denoising dentro del rango de
+function resp=LinearDiffPSNRC(original,fn, lambda, dt, start,stop,step,showImg)
+%Realiza un proceso en COLOR de difusion pura y denoising dentro del rango de
 %iteraciones start-step-stop. Genera un grafico y selecciona le maximo.
 %function [data,datan]=LinearDiffPSNR(original,ruidosa, lambda, dt, start,stop,step)
-original=im2double(original);
-fn=im2double(fn);
-[m,n]=size(fn);
 
+original=double(original);
+fn=double(fn);
+[m,n,i]=size(fn);
 Nit=start:step:stop;
-datan=zeros(1,length(Nit));
-data=zeros(1,length(Nit));
-imlambda=zeros(m,n,length(Nit));
-imnlambda=zeros(m,n,length(Nit));
+resps=zeros(2,length(Nit));
+for chn=1:3
+    orig=original(:,:,chn);
+    ruid=fn(:,:,i);
+    resp=LinearDiffPSNR(orig,ruid,2,1.e-2,start,stop,step,'n','n');
+    resps=resps+resp;
+end
 
-clc;
-for i=1:length(Nit)   
-    it=Nit(i);
-    [un, diff_un]=LinearDiffusion2016(fn, 0, dt, it);
-    imnlambda(:,:,i)=un;    
-    
-    valorn=PSNR_V(un,original);  
-    datan(1,i)=valorn;    
-    
-    [u, diff_u]=LinearDiffusion2016(fn, lambda, dt, it);
-    imlambda(:,:,i)=im2uint8(double(u));
-      
-    valor=PSNR_V(u,original);  
-    data(1,i)=valor;
-end  
-if(showRes=='y')
-    fprintf('Lambda: %d, dt: %2.2e, BW\n',lambda,dt); 
+data=resps(2,:);
+datan=resps(1,:);
+
+fprintf('Lambda: %d, dt: %2.2e, COLOR\n',lambda,dt); 
     fprintf('\n Iter\tPSNR difusión\tPSNR denoise\t\n');
     fprintf('--------------------------------------------------\n');
     for j=1:length(Nit)
         fprintf('%d\t%f\t%f\n',Nit(j),datan(1,j),data(1,j));    
     end
+    
     maxl=find(data==max(data));
     maxnl=find(datan==max(datan));
 
@@ -58,20 +49,40 @@ if(showRes=='y')
     else
         set(axH,'ylim',[min(datan), max(datan)+0.5]);
     end
-end
 
 if(showImg=='y')
+    imdif=zeros(m,n,3);
+    imnoi=zeros(m,n,3);
+    for chn=1:3        
+        ruid=fn(:,:,chn);    
+        [imdif(:,:,chn), diff_un]=LinearDiffusion2016(ruid, 0, dt, maxnl);
+        [imnoi(:,:,chn), diff_u]=LinearDiffusion2016(ruid, lambda, dt, maxl);
+    end
+    
+   
+    
+    
     figure(2);
-    [un, diff_un]=LinearDiffusion2016(fn, 0, dt, maxnl);
-    [u, diff_u]=LinearDiffusion2016(fn, lambda, dt, maxl);
-    subplot(1,2,1);   
-    imshow(im2double(un));
+    subplot(1,2,1);    
+    imshow(uint8(imdif));
     title('Difusión');
     
     subplot(1,2,2);
-    imshow(im2double(u));
+    imshow(uint8(imnoi));
     title('Denoise');
-end
+    
 
-resp=[datan' data']';
+    %{
+    subplot(1,2,1);   
+    
+    imshow(im2double(imdif));
+    title('Difusión');
+    
+    subplot(1,2,2);
+    imagesc(imdif);
+    title('Denoise');
+    
+end  
+  %}
+end
 end
