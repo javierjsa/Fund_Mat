@@ -1,8 +1,13 @@
 function SVDpeak(ruidosa,original)
-%calcula la descomposicion SVD
-%calcula pnsr entre image original y reconstruccion ruidosa
-%calcula el ratio de crecimiento entre pasos
-
+%Calcula la descomposicion SVD.
+%Calcula pnsr entre la imagen original y reconstruccion ruidosa
+%empleando la salida de la funcion nativa psnr de matlab [peaksnr,snr]:
+% -tomando el valor maximo peaksnr que facilita la funcion
+% -acumulando los valores snr
+%Calcula la psnr empleando la función externa PSNR_V
+%Calcula la variacion de la PSNR al reconstruir tanto la imagen
+%original como la ruidosa empleando PSNR_V.
+clc;
 original=im2double(original);
 ruidosa=im2double(ruidosa);
 %
@@ -33,21 +38,30 @@ end
 
 subplot(3,1,1);  
 plot(PSNR);
-title('PSNR matlab')
+title('Función psnr matlab (original, reconst.ruidosa)');
 
 subplot(3,1,2); 
 plot(PSNR2);
-title('PSNR con PSNR_V');
+title('Función PSNR\_V (original, reconst.ruidosa)');
 
 subplot(3,1,3); 
 plot(PSNRratio);
-title('Ratio reconst orig-ruidosa');
+title('Función PSNR\_V (reconst. orig, reconst. ruidosa)');
+
+axH = findall(gcf,'type','axes');
+
+vmin= min([min(PSNR),min(PSNR2),min(PSNRratio)]);
+vmax= max([max(PSNR),max(PSNR2),max(PSNRratio)]);
+
+set(axH,'ylim',[vmin, vmax+0.5]);
+
+
 
 res=max(PSNR);
 res2=max(PSNR2);
-val=find(PSNR==actual);
+
 val1=find(PSNR==res);
 val2=find(PSNR2==res2);
-fprintf('Matlab PSNR direct:%f, K=%d\n',actual,val);
-fprintf('Matlab PSNR matlab:%f, K=%d\n',res,val1);
-fprintf('Matlab PSNR calcul:%f, K=%d\n',res2,val2);
+fprintf('Función psnr(valor directo peaksnr) Matlab:%f\n',actual);
+fprintf('Función psnr(snr) Matlab:%f, K=%d\n',res,val1);
+fprintf('Función PSNR_V:%f, K=%d\n',res2,val2);
