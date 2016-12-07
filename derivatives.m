@@ -11,10 +11,22 @@ end;
 [gx5,gy5,gxx5,gyy5,gxy5]=derivative5(imd,'x','y','xx','xy','xy');
 [gx7,gy7,gxx7,gyy7,gxy7]=derivative7(imd,'x','y','xx','xy','xy');
 
-% Compute gradient magnitude
+% Modulo del gradiente
 gmag5 = hypot(gx5,gy5);
 gmag7 = hypot(gx7,gy7);
 
+%Laplaciano
+
+lap5=gxx5+gyy5;
+lap7=gyy7+gyy7;
+
+imagen=sum(imd(:).^2);
+
+I5=sum(gx5(:).^2+gy5(:).^2);
+II5=sum(gxx5(:).^2+gxy5(:).^2);
+
+I7=sum(gx7(:).^2+gy7(:).^2);
+II7=sum(gxx7(:).^2+gxy7(:).^2);
 
 
 figure(1);
@@ -75,26 +87,27 @@ imagesc(gmag7);
 title(b5,'Mod. gradiente Derivative7');
 pbaspect(b5,[1 1 1]);
 
+figure(7)
+colormap('gray');
+a7=subplot(1,2,1);
+imagesc(lap5);
+title(a7,'Laplaciano Der.5');
+pbaspect(a7,[1 1 1]);
+b7=subplot(1,2,2);
+imagesc(lap7);
+title(b7,'Laplaciano Der.7');
+pbaspect(b7,[1 1 1]);
 
-
-%Calculo del modulo
-%modG5=sqrt(gx5.^2+gy5.^2);
-%modG7=sqrt(gx7.^2+gy7.^2);
-%[f,g]=imgradient(imd,'prewitt');
-%k=sqrt(sum(f(:).^2));
-
-
-%Calculo de energias
-%EG5=sum(modG5(:).^2);
-%EG7=sum(modG7(:).^2);
-
-imagen=sum(imd(:).^2);
-
-I5=sum(gx5(:).^2+gy5(:).^2);
-II5=sum(gxx5(:).^2+gxy5(:).^2);
-
-I7=sum(gx7(:).^2+gy7(:).^2);
-II7=sum(gxx7(:).^2+gxy7(:).^2);
+figure(8);
+colormap('gray');
+a8=subplot(1,2,1);
+imagesc(lap5-gyy5);
+title(a8,'Lap5-gyy5');
+pbaspect(a8,[1 1 1]);
+b8=subplot(1,2,2);
+imagesc(lap5-gxx5);
+title(b8,'Lap5-gxx5 ');
+pbaspect(b8,[1 1 1]);
 
 %{
 im=sqrt(gx5.^2+gy5.^2);
