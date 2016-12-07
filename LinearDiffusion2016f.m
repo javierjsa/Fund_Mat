@@ -8,7 +8,7 @@ hx=1;
 hy=1;
 % Inicializacion: imagen contaminada
 u=fn;
-
+func=zeros(1,Nit);
 
 for k=1:Nit
     % Almaceno la solucion en la iterada previa
@@ -21,7 +21,9 @@ for k=1:Nit
     u_yy=[zeros(1,n); -u_ymas(1:end-1,:)+u_ymas(2:end, :)]/hy;
     Lap=(u_xx+u_yy);
     % resuelvo la ecuacion
-    u=u+dt*(Lap+lambda*(fn-u));    
+    u=u+dt*(Lap+lambda*(fn-u));
+    fun=Lap.^2+lambda*((u-fn)).^2;
+    func(1,k)=sum(fun(:));
     % calculo la energia de la diferencia de iteradas sucesivas
     diff_u(k)=sum((u(:)-u_prev(:)).^2);
 end
