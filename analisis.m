@@ -10,8 +10,6 @@ clc;
 rank_A=rank(A);
 rank_Ab=rank([A b]);
 
-
-
 if (rank_A ~= rank_Ab)
   comp=0;  
   str='Rango A distinto de Rango Ab. Sistema incompatible.';
