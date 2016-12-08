@@ -1,7 +1,7 @@
-function [u, diff_u,func]=LinearDiffusion2016f(fn, lambda, dt, Nit);
+function [u, diff_u]=LinearDiffusion2016(fn, lambda, dt, Nit);
 % Emanuele Schiavi curso 2016-2017
 % Algoritmo para difusion lineal
-% Devuelve valores del funcional de energia
+
 [m, n]=size(fn);
 % paso de discretizacion espacial
 hx=1;
