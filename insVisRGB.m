@@ -2,7 +2,7 @@ function insVisRGB(original,ruidosa,lambda, dt, Nit)
 %insVis(original,ruidosa,lambda, dt, Nit)
 %Realiza filtrado y difusión con los paramateros indicados en color
 %Muestra imágenes para inspección visual.
-%La diferencia de imágenes es multiplicada por 2 para apreciar
+%La diferencia de imágenes es multiplicada por 3 para apreciar
 %mejor el resultado.
     
  [m,n,j]=size(ruidosa);
@@ -17,8 +17,8 @@ function insVisRGB(original,ruidosa,lambda, dt, Nit)
     [res_noi(:,:,chn), diff_u]=LinearDiffusion2016(ruid, lambda, dt, Nit);
  end
     
-    diff_filt=(ruidosa-res_filt)*2;
-    diff_noi=(ruidosa-res_noi)*2;
+    diff_filt=(ruidosa-res_filt)*3;
+    diff_noi=(ruidosa-res_noi)*3;
     
        
     figure(1);   
@@ -32,7 +32,7 @@ function insVisRGB(original,ruidosa,lambda, dt, Nit)
     
     subplot(1,3,3);
     imshow(rgb2gray(diff_filt));
-    title('Original-Filtrada');
+    title('(Ruidosa-Filtrada)*3');
     
     figure(2);   
     subplot(1,3,1);   
@@ -43,9 +43,8 @@ function insVisRGB(original,ruidosa,lambda, dt, Nit)
     imshow(im2double(res_noi));
     title('Imagen Denoise');   
     
-    subplot(1,3,3);
-    colormap('autumn');
+    subplot(1,3,3);    
     imshow(rgb2gray(diff_noi));
-    title('Original-Denoise'); 
+    title('(Ruidosa-Denoise)*3'); 
     
 end   
