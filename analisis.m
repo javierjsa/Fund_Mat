@@ -14,6 +14,7 @@ meig=min(e);
 maeig=max(e);
 fprintf('=======================================================\n');
 fprintf('Dimensión Imagen F: %d\n',rankA);
+fprintf('Rango ampliado A|b: %d\n',rank([A b]));
 fprintf('Dimensión espacio de llegada: %d\n',n);
 fprintf('Dimensión kernel: %d\n',kernel); 
 fprintf('=======================================================\n\n');
@@ -50,12 +51,15 @@ if rankA==rankAb && kernel>0
         imprimir(x);    
         fprintf('Residuo sistema inicial Ax=b:\n');
         imprimir(r);
+        ffprintf('---------------------------------------------------\n');
         op_pinv(A,b);
     else        
         fprintf('A''A semidefinida positiva\n');
         fprintf('=======================================================\n\n');
         fprintf('\nSolución de mínima energía (A''A+Id)x=A''b\n');        
-        op_pinv(A,b);
+        op_pinv(A,b);        
+        fprintf('Solución con operador "\\" de (A''A+Id)x=A''b\n');
+        op_back(M,bm);
     end    
 end
     
@@ -89,3 +93,10 @@ function op_pinv(A,b)
  fprintf('Energía resíduo pinv Ax-b: %2.3E\n',norm((A*xpinv)-b));
  fprintf('-------------------------------------------------------\n')
 end 
+
+function op_back(M,bm)
+ [a,b]=size(M);
+ M=M+eye(a);
+ x=M\bm;
+ imprimir(x);
+end
