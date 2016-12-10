@@ -20,13 +20,13 @@ end
 [Q,R]=qr(A);
 
 figure(1)
-colormap('gray');
+colormap('jet');
 a1=subplot(2,3,1);
 imagesc(D);
 title(a1,'Matriz U');
 pbaspect(a1,[1 1 1]);
 a2=subplot(2,3,2);
-imagesc(S);
+imshow(im2double(S));
 title(a2,'Matriz S');
 pbaspect(a2,[1 1 1]);
 a3=subplot(2,3,3);
