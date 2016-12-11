@@ -2,14 +2,25 @@ function resp=LinearDiffPSNR(original,fn, lambda, dt, start,stop,step,showImg,sh
 %Realiza un proceso en BW de filtrado pura y denoising dentro del rango de
 %iteraciones start-step-stop. Genera un grafico y selecciona le maximo.
 %function [data,datan]=LinearDiffPSNR(original,ruidosa, lambda, dt, start,stop,step)
+
+clc;
+close all;
+
 original=im2double(original);
 fn=im2double(fn);
 [m,n]=size(fn);
 
 Nit=start:step:stop;
+
+%Datos PSNR difusion
 datan=zeros(1,length(Nit));
+%Datos PSNR denoise
 data=zeros(1,length(Nit));
+
+%Imagenes de filtrado
 imlambda=zeros(m,n,length(Nit));
+
+%Imagenes de denoise
 imnlambda=zeros(m,n,length(Nit));
 
 clc;
@@ -21,9 +32,9 @@ for i=1:length(Nit)
     valorn=PSNR_V(un,original);  
     datan(1,i)=valorn;    
     
-    [u, diff_u,funcd]=LinearDiffusion2016f(fn, lambda, dt, it);
-    imlambda(:,:,i)=im2uint8(double(u));
-      
+    [u, diff_u,funcd]=LinearDiffusion2016f(fn, lambda, dt, it);    
+    imlambda(:,:,i)=u;
+    
     valor=PSNR_V(u,original);  
     data(1,i)=valor;
 end  
@@ -60,7 +71,7 @@ if(showRes=='y')
         set(axH,'ylim',[min(datan), max(datan)+0.5]);
     end
     
-    it=start:1:length(funcf);
+    it=1:1:length(funcf);
     
     figure(2);
     subplot(2,1,1);  
@@ -99,14 +110,14 @@ if(showImg=='y')
     [u, diff_u]=LinearDiffusion2016(fn, lambda, dt, maxl);
    
     subplot(1,2,1);   
-    imshow(im2double(un));
+    imshow(im2double(imnlambda(:,:,maxnl)));
     title('Imagen Filtrado');
     
     subplot(1,2,2);
-    imshow(im2double(u));
+    imshow(im2double(imlambda(:,:,maxl)));
     title('Imagen Denoise');   
     
-    
+    %REPASAR!!!
 end
 
 resp=[datan' data']';
