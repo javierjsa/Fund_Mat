@@ -3,7 +3,7 @@ function derivatives(imd)
 %Calcula el modulo del gradiente
 %Genera gráficas y calcula energía
 
-
+close all;
 clc;
 if not(isfloat(imd))
     imd=double(imd);
@@ -15,21 +15,27 @@ end;
 gmag5 = hypot(gx5,gy5);
 gmag7 = hypot(gx7,gy7);
 
-%Laplaciano
+%Modulo del Laplaciano
+mlap5=hypot(gxx5,gyy5);
+mlap7=hypot(gyy7,gyy7);
 
 lap5=gxx5+gyy5;
 lap7=gyy7+gyy7;
 
 imagen=sum(imd(:).^2);
 
+%energia del gradiente y laplaciando
+%derivative5
 I5=sum(gx5(:).^2+gy5(:).^2);
 II5=sum(gxx5(:).^2+gxy5(:).^2);
 
+%energia del gradiente y laplaciando
+%derivative7
 I7=sum(gx7(:).^2+gy7(:).^2);
 II7=sum(gxx7(:).^2+gxy7(:).^2);
 
 
-figure(1);
+figure('name','Gradiente Derivative5');
 colormap('gray');
 a1=subplot(1,2,1);
 imagesc(gx5);
@@ -41,7 +47,7 @@ title(b1,'Iy. Derivative5');
 pbaspect(b1,[1 1 1]);
 
 
-figure(2);
+figure('name','Laplaciano Derivative5');
 colormap('gray');
 a2=subplot(1,2,1);
 imagesc(gxx5);
@@ -53,7 +59,7 @@ title(b2,'Iyy. Derivative5');
 pbaspect(b2,[1 1 1]);
 
 
-figure(3);
+figure('name','Gradiente Derivative7');
 colormap('gray');
 a3=subplot(1,2,1);
 imagesc(gx7);
@@ -65,7 +71,7 @@ title(b3,'Iy. Derivative7');
 pbaspect(b3,[1 1 1]);
 
 
-figure(4);
+figure('name','Laplaciano Derivative7');
 colormap('gray');
 a4=subplot(1,2,1);
 imagesc(gxx7);
@@ -76,39 +82,40 @@ imagesc(gyy7);
 title(b4,'Iyy. Derivative7');
 pbaspect(b4,[1 1 1]);
 
-figure(5);
+figure('name','Modulo gradiente Derivative5,Derivative7');
 colormap('gray');
 a5=subplot(1,2,1);
 imagesc(gmag5);
-title(a5,'Mod. gradiente Derivative5');
+title(a5,'Mod. Gradiente Der5');
 pbaspect(a5,[1 1 1]);
 b5=subplot(1,2,2);
 imagesc(gmag7);
-title(b5,'Mod. gradiente Derivative7');
+title(b5,'Mod. Gradiente Der7');
 pbaspect(b5,[1 1 1]);
 
-figure(7)
+figure('name','Modulo Laplaciano Derivative5, Derivative7');
 colormap('gray');
 a7=subplot(1,2,1);
-imagesc(lap5);
-title(a7,'Laplaciano Der.5');
+imagesc(mlap5);
+title(a7,'Mod. Laplaciano Der5');
 pbaspect(a7,[1 1 1]);
 b7=subplot(1,2,2);
-imagesc(lap7);
-title(b7,'Laplaciano Der.7');
+imagesc(mlap7);
+title(b7,'Mod. Laplaciano Der7');
 pbaspect(b7,[1 1 1]);
 
-figure(8);
+%{
+figure('name','Laplaciano Derivative5');
 colormap('gray');
 a8=subplot(1,2,1);
-imagesc(lap5-gyy5);
-title(a8,'Lap5-gyy5');
+imagesc(gyy5);
+title(a8,'gyy5');
 pbaspect(a8,[1 1 1]);
 b8=subplot(1,2,2);
-imagesc(lap5-gxx5);
-title(b8,'Lap5-gxx5 ');
+imagesc(-gxx5);
+title(b8,'gxx5');
 pbaspect(b8,[1 1 1]);
-
+%}
 %{
 im=sqrt(gx5.^2+gy5.^2);
 
@@ -130,8 +137,14 @@ fprintf('---------------------------------------------\n');
 fprintf('Derivative5\t%.3f\t\t%.3f\n',I5,II5);
 fprintf('Derivative7\t%.3f\t\t%.3f\n',I7,II7);
 
-fprintf('\tModulo del gradiente\n');
+fprintf('Modulo del gradiente\n');
 fprintf('---------------------------------------------\n');
 fprintf('Derivative5\t%.3f\n',sum(gmag5(:)));
 fprintf('Derivative7\t%.3f\n',sum(gmag7(:)));
+
+fprintf('Modulo del laplaciano\n');
+fprintf('---------------------------------------------\n');
+fprintf('Derivative5\t%.3f\n',sum(mlap5(:)));
+fprintf('Derivative7\t%.3f\n',sum(mlap7(:)));
+
 end
