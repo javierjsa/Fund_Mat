@@ -1,13 +1,18 @@
-function resp=LinearDiffPSNRC(original,fn, lambda, dt, start,stop,step,showImg)
+function LinearDiffPSNRC(original,fn, lambda, dt, start,stop,step,showImg)
 %Realiza un proceso en COLOR de difusion pura y denoising dentro del rango de
 %iteraciones start-step-stop. Genera un grafico y selecciona le maximo.
 %function [data,datan]=LinearDiffPSNR(original,ruidosa, lambda, dt, start,stop,step)
+
+clc;
+close all;
 
 original=double(original);
 fn=double(fn);
 [m,n,i]=size(fn);
 Nit=start:step:stop;
 resps=zeros(2,length(Nit));
+
+
 for chn=1:3
     orig=original(:,:,chn);
     ruid=fn(:,:,i);
@@ -62,15 +67,21 @@ if(showImg=='y')
    
     
     
-    figure(2);
+    figure('name','Filtrado');
     subplot(1,2,1);    
     imshow(uint8(imdif));
-    title('Difusión');
-    
+    title('Filtrado');
     subplot(1,2,2);
+    imshow(uint8((original-imdif)*2));
+    title('(Original-Filtrado)x2');
+    
+    figure('name','Denoise');
+    subplot(1,2,1);
     imshow(uint8(imnoi));
     title('Denoise');
-    
+    subplot(1,2,2);
+    imshow(uint8((original-imnoi)*2));
+    title('(Original-Filtrado)x2');
 
     %{
     subplot(1,2,1);   
