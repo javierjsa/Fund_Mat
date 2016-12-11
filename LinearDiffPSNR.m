@@ -1,7 +1,8 @@
 function resp=LinearDiffPSNR(original,fn, lambda, dt, start,stop,step,showImg,showRes)
+%LinearDiffPSNR(original,ruidosa, lambda, dt, start,stop,step,showImg,showRes)
 %Realiza un proceso en BW de filtrado pura y denoising dentro del rango de
 %iteraciones start-step-stop. Genera un grafico y selecciona le maximo.
-%function [data,datan]=LinearDiffPSNR(original,ruidosa, lambda, dt, start,stop,step)
+
 
 clc;
 close all;
@@ -26,18 +27,22 @@ imnlambda=zeros(m,n,length(Nit));
 clc;
 for i=1:length(Nit)   
     it=Nit(i);
+    %filtrado
     [un, diff_un,funcf]=LinearDiffusion2016f(fn, 0, dt, it);
     imnlambda(:,:,i)=un;    
     
     valorn=PSNR_V(un,original);  
     datan(1,i)=valorn;    
     
+    %denoise
     [u, diff_u,funcd]=LinearDiffusion2016f(fn, lambda, dt, it);    
     imlambda(:,:,i)=u;
     
     valor=PSNR_V(u,original);  
     data(1,i)=valor;
 end  
+
+%Tabla de valores PSNR
 if(showRes=='y')
     fprintf('Lambda: %d, dt: %2.2e, BW\n',lambda,dt); 
     fprintf('\n Iter\tPSNR filtrado\tPSNR denoise\t\n');
@@ -45,6 +50,8 @@ if(showRes=='y')
     for j=1:length(Nit)
         fprintf('%d\t%f\t%f\n',Nit(j),datan(1,j),data(1,j));    
     end
+    
+    %Valores máximos
     maxl=find(data==max(data));
     maxnl=find(datan==max(datan));
 
@@ -62,7 +69,6 @@ if(showRes=='y')
     plot(Nit,data);
     title('PSNR Denoise');    
       
-
     axH = findall(gcf,'type','axes');
 
     if max(data)>max(datan)
@@ -73,7 +79,7 @@ if(showRes=='y')
     
     it=1:1:length(funcf);
     
-    figure(2);
+    figure('name','Energía del funcional');
     subplot(2,1,1);  
     plot(it,funcf);
     title('Energía funcional Filtrado');
@@ -93,21 +99,21 @@ if(showRes=='y')
     
     it=1:1:length(datait);
     
-    figure(3);
+    figure('name','Variación PSNR entre iteraciones');
     subplot(2,1,1);  
     plot(it,datait);
-    title('Variación PSNR iteradas filtrado');
+    title('Variación PSNR iteraciones filtrado');
 
     subplot(2,1,2); 
     plot(it,datanit);
-    title('Variación PSNR iteradas Denoise');
+    title('Variación PSNR iteraciones Denoise');
    
 end
 
 if(showImg=='y')
-    figure(4);
-    [un, diff_un]=LinearDiffusion2016(fn, 0, dt, maxnl);
-    [u, diff_u]=LinearDiffusion2016(fn, lambda, dt, maxl);
+    figure('name','Imágenes con PSNR máxima');
+    %[un, diff_un]=LinearDiffusion2016(fn, 0, dt, maxnl);
+    %[u, diff_u]=LinearDiffusion2016(fn, lambda, dt, maxl);
    
     subplot(1,2,1);   
     imshow(im2double(imnlambda(:,:,maxnl)));
@@ -117,7 +123,7 @@ if(showImg=='y')
     imshow(im2double(imlambda(:,:,maxl)));
     title('Imagen Denoise');   
     
-    %REPASAR!!!
+    
 end
 
 resp=[datan' data']';
