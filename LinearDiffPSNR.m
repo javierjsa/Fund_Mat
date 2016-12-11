@@ -1,4 +1,4 @@
-function resp=LinearDiffPSNR(original,fn, lambda, dt, start,stop,step,showImg,showRes)
+function LinearDiffPSNR(original,fn, lambda, dt, start,stop,step,showImg,showRes)
 %LinearDiffPSNR(original,ruidosa, lambda, dt, start,stop,step,showImg,showRes)
 %Realiza un proceso en BW de filtrado pura y denoising dentro del rango de
 %iteraciones start-step-stop. Genera un grafico y selecciona le maximo.
@@ -115,16 +115,24 @@ if(showImg=='y')
     %[un, diff_un]=LinearDiffusion2016(fn, 0, dt, maxnl);
     %[u, diff_u]=LinearDiffusion2016(fn, lambda, dt, maxl);
    
-    subplot(1,2,1);   
+    subplot(2,2,1);   
     imshow(im2double(imnlambda(:,:,maxnl)));
     title('Imagen Filtrado');
     
-    subplot(1,2,2);
+    subplot(2,2,2);
     imshow(im2double(imlambda(:,:,maxl)));
     title('Imagen Denoise');   
+    
+    subplot(2,2,3);
+    imshow((original-imnlambda(:,:,maxnl))*3);    
+    title('(Original-filtrado)x3');   
+    
+    subplot(2,2,4);
+    imshow(imadjust(original-imlambda(:,:,maxl)));
+    title('(Original-Denoise)x3');   
     
     
 end
 
-resp=[datan' data']';
+%resp=[datan' data']';
 end
