@@ -1,4 +1,4 @@
-function LinearDiffPSNR(original,fn, lambda, dt, start,stop,step,showImg,showRes)
+function resp=LinearDiffPSNR(original,fn, lambda, dt, start,stop,step,showImg,showRes)
 %LinearDiffPSNR(original,ruidosa, lambda, dt, start,stop,step,showImg,showRes)
 %Realiza un proceso en BW de filtrado pura y denoising dentro del rango de
 %iteraciones start-step-stop. Genera un grafico y selecciona le maximo.
@@ -134,5 +134,5 @@ if(showImg=='y')
     
 end
 
-%resp=[datan' data']';
+resp=[datan' data']';
 end
