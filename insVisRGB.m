@@ -20,6 +20,13 @@ function insVisRGB(original,ruidosa,lambda, dt, Nit)
     diff_filt=(ruidosa-res_filt)*3;
     diff_noi=(ruidosa-res_noi)*3;
     
+    psnr_fil=PSNR_RGB(original,res_filt);
+    psnr_noi=PSNR_RGB(original,res_noi);
+    
+    fprintf('PSNR filtrado:%.3f\n',psnr_fil);
+    fprintf('PSNR denoise:%.3f\n',psnr_noi);
+    
+    
        
     figure(1);   
     subplot(1,3,1);   
