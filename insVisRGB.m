@@ -28,7 +28,7 @@ function insVisRGB(original,ruidosa,lambda, dt, Nit)
     
     
        
-    figure(1);   
+    figure('name','Resultado proceso filtrado');   
     subplot(1,3,1);   
     imshow(original);
     title('Imagen original');
@@ -41,7 +41,7 @@ function insVisRGB(original,ruidosa,lambda, dt, Nit)
     imshow(rgb2gray(diff_filt));
     title('(Ruidosa-Filtrada)*3');
     
-    figure(2);   
+    figure('name','Resultado proceso denoise');   
     subplot(1,3,1);   
     imshow(original);
     title('Imagen original');

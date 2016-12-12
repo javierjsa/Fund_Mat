@@ -23,7 +23,7 @@ function insVis(original,ruidosa,lambda, dt, Nit)
     diff_filt=(ruidosa-un)*3;
     diff_noi=(ruidosa-u)*3;
     
-    figure(1);   
+    figure('name','Resultado proceso filtrado');     
     subplot(1,3,1);   
     imshow(original);
     title('Imagen original');
@@ -36,7 +36,7 @@ function insVis(original,ruidosa,lambda, dt, Nit)
     imshow(diff_filt);
     title('(Ruidosa-Filtrado)x3');
     
-    figure(2);   
+    figure('name','Resultado proceso denoise');    
     subplot(1,3,1);   
     imshow(original);
     title('Imagen original');
